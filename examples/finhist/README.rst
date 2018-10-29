@@ -10,7 +10,7 @@ The interface of ``FinancialHistory`` consists of:
 ``__init__(amount)``
     Begin a financial history with an amount given (default: 0).
 
-``__repr__``
+``__repr__()``
     Return string representation of the instance, for debugging.
 
 ``receive(amount, source)``
