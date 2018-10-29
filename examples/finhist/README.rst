@@ -3,10 +3,9 @@ Financial History Example
 
 ``FinancialHistory`` instances keep track of a person's expenses and income.
 
-.. note::  This example is adapted from *Smalltalk-80: the language*,
-by Adele Goldberg and Dave Robson (Addison-Wesley, 1989). 
+.. note::  This example is adapted from *Smalltalk-80: the language*, by Adele Goldberg and Dave Robson (Addison-Wesley, 1989). 
 
-The interface of ``FinancialHistory`` consists of::
+The interface of ``FinancialHistory`` consists of:
 
 ``__init__(amount)``
     Begin a financial history with an amount given (default: 0).
