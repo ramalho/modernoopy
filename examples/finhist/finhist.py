@@ -1,35 +1,6 @@
 """
-
-``FinancialHistory`` keeps track of a person's expenses and income.
-
-.. note::  This example is adapted from *Smalltalk-80: the language*,
-by Adele Goldberg and Dave Robson (Addison-Wesley, 1989). 
-
-The interface of this class consists of::
-
-``__init__(amount)``
-    Begin a financial history with an amount given (default: 0).
-
-``receive(amount, source)``
-    Receive an amount from the named source.
-
-``spend(amount, reason)``
-    Spend an amount for the named reason.
-
-``balance()``
-    Return total amount currenly on hand.
-
-``received_from(source)``
-    Return total amount received from the given source.
-
-``spent_for(reason)``
-    Return total amount spent for the given reason.
-
-``__repr__``
-    Return string representation of instance, for debugging.
-
-Doctests
-========
+``FinancialHistory`` keeps track of a person's expenses,
+income, and balance.
 
 Create ``FinancialHistory`` with $ 100.
 
@@ -74,7 +45,6 @@ Check amount spent on travel (zero):
 
     >>> h.spent_for('travel')
     Decimal('0')
-
 
 """
 
