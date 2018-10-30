@@ -1,4 +1,26 @@
+import pytest
+
 from index import Index
+
+
+@pytest.fixture
+def sample_index():
+    sample = [
+        ("7", "DIGIT SEVEN"),
+        ("8", "DIGIT EIGHT"),
+        ("9", "DIGIT NINE"),
+        (":", "COLON"),
+        (";", "SEMICOLON"),
+        ("<", "LESS-THAN SIGN"),
+        ("=", "EQUALS SIGN"),
+        (">", "GREATER-THAN SIGN"),
+        ("≥", "GREATER-THAN OR EQUAL TO"),
+    ]
+    idx = Index()
+    for char, words in sample:
+        for word in words.replace("-", " ").split():
+            idx.add(word, char)
+    return idx
 
 
 def test_unique_entry():
@@ -15,22 +37,54 @@ def test_three_occurrences():
     assert idx["DIGIT"] == {"7", "8", "9"}
 
 
-def test_several_entries():
-    sample = [
-        ("7", "DIGIT SEVEN"),
-        ("8", "DIGIT EIGHT"),
-        ("9", "DIGIT NINE"),
-        (":", "COLON"),
-        (";", "SEMICOLON"),
-        ("<", "LESS-THAN SIGN"),
-        ("=", "EQUALS SIGN"),
-        (">", "GREATER-THAN SIGN"),
-    ]
-    idx = Index()
-    for char, words in sample:
-        for word in words.split():
-            idx.add(word, char)
-    assert idx["DIGIT"] == {"7", "8", "9"}
-    assert idx["NINE"] == {"9"}
-    assert idx["SIGN"] == {"<", "=", ">"}
-    assert idx["no-such-entry"] == set()
+@pytest.mark.parametrize(
+    "key, expected",
+    [
+        ("DIGIT", {"7", "8", "9"}),
+        ("NINE", {"9"}),
+        ("SIGN", {"<", "=", ">"}),
+        ("no-such-key", set()),
+    ],
+)
+def test_several_entries(sample_index, key, expected):
+    assert sample_index[key] == expected
+
+
+@pytest.mark.parametrize(
+    "key, expected",
+    [
+        ("DIGIT", {"7", "8", "9"}),
+        ("NINE", {"9"}),
+        ("SIGN", {"<", "=", ">"}),
+        ("no-such-key", set()),
+    ],
+)
+def test_get_single_arg(sample_index, key, expected):
+    assert sample_index.get(key) == expected
+
+
+@pytest.mark.parametrize(
+    "key, expected",
+    [
+        ("DIGIT", {"7", "8", "9"}),
+        ("NINE", {"9"}),
+        ("SIGN", {"<", "=", ">"}),
+        ("no-such-key", set()),
+    ],
+)
+def test_get_single_arg(sample_index, key, expected):
+    assert sample_index.get(key) == expected
+
+
+@pytest.mark.parametrize(
+    "keys, expected",
+    [
+        (["DIGIT", "SEVEN"], {"7"}),
+        (["DIGIT", "SIGN"], set()),
+        (["GREATER", "THAN"], {">", "≥"}),
+        (["GREATER", "THAN", "EQUAL"], {"≥"}),
+        (["no-such-key"], set()),
+    ],
+)
+def test_get_multiple_args(sample_index, keys, expected):
+    assert sample_index.get(*keys) == expected

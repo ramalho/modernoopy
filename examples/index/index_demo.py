@@ -29,9 +29,7 @@ def build_index():
 
 def find(words):
     idx = build_index()
-    results = idx[words.pop().upper()]
-    while words and results:
-        results &= idx[words.pop().upper()]
+    results = idx.get(*[w.upper() for w in words])
     if results:
         for char in sorted(results):
             name = unicodedata.name(char)
