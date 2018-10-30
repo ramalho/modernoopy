@@ -12,18 +12,18 @@ with clsses and functions from the ``dataclasses`` standard module::
     population <class 'float'>
     area <class 'float'>
 
-``Country`` inherits a ``__repr__``:
+``Country`` inherits a ``__repr__``::
 
     >>> cn = Country('China', 1_394_897_526, 9_640_821)
     >>> cn
     Country(name='China', population=1394897526, area=9640821)
 
-``Country`` implements a ``density`` method:
+``Country`` implements a ``density`` method::
 
-    >>> cn.density()
-    144.68659111086077
     >>> Country.density.__doc__
     'population density in persons/km²'
+    >>> cn.density()
+    144.68659111086077
 
 
 Population density ranking
