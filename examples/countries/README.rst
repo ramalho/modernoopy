@@ -1,8 +1,9 @@
 Data class example: Country
 ===========================
 
-``Country`` is a data class. Data classes are created and managed
-with clsses and functions from the ``dataclasses`` standard module::
+``Country`` is a data class, a class that exists mainly to hold data
+in public fields. Data classes are created and managed with classes
+and functions from the ``dataclasses`` standard module::
 
     >>> from countries import Country
     >>> from dataclasses import fields
