@@ -8,7 +8,7 @@ class Index:
         self._map = collections.defaultdict(set)
 
     def add(self, key, value):
-        self._map[key.upper()].add(value)
+        self._map[key].add(value)
 
     def __getitem__(self, key):
-        return self._map[key.upper()]
+        return self._map[key]

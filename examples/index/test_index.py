@@ -4,7 +4,7 @@ from index import Index
 def test_unique_entry():
     idx = Index()
     idx.add("COLON", ":")
-    assert idx["colon"] == {":"}
+    assert idx["COLON"] == {":"}
 
 
 def test_three_occurrences():
@@ -12,7 +12,7 @@ def test_three_occurrences():
     idx = Index()
     for char, word in sample:
         idx.add(word, char)
-    assert idx["digit"] == {"7", "8", "9"}
+    assert idx["DIGIT"] == {"7", "8", "9"}
 
 
 def test_several_entries():
@@ -30,7 +30,7 @@ def test_several_entries():
     for char, words in sample:
         for word in words.split():
             idx.add(word, char)
-    assert idx["digit"] == {"7", "8", "9"}
-    assert idx["nine"] == {"9"}
-    assert idx["sign"] == {"<", "=", ">"}
+    assert idx["DIGIT"] == {"7", "8", "9"}
+    assert idx["NINE"] == {"9"}
+    assert idx["SIGN"] == {"<", "=", ">"}
     assert idx["no-such-entry"] == set()
