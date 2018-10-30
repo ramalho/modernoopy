@@ -35,7 +35,7 @@ List of 10 most populous countries, sorted by population density::
     >>> data = [Country(*t) for t in pop10]
     >>> data.sort(key=Country.density, reverse=True)
     >>> for country in data:
-    ...     print(f"{country.density():>6.1f}  {country.name}")
+    ...     print(f"{country.density():6.1f}  {country.name}")
     1148.9  Bangladesh
      407.3  India
      334.5  Japan
