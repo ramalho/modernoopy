@@ -18,8 +18,8 @@ Simple class to represent a right-angled triangle.
 
 import math
 
-class RightTriangle:
 
+class RightTriangle:
     def __init__(self, leg_a, leg_b):
         self.a = float(leg_a)
         self.b = float(leg_b)
@@ -30,8 +30,8 @@ class RightTriangle:
     def __str__(self):
         sides = [self.a, self.b, self.hypot()]
         sides.sort(reverse=True)
-        msg = "Right triangle with sides {}, {}, and {}." 
+        msg = "Right triangle with sides {}, {}, and {}."
         return msg.format(*sides)
 
     def __repr__(self):
-        return f'RightTriangle({self.a}, {self.b})'
+        return f"RightTriangle({self.a}, {self.b})"
