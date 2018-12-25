@@ -3,6 +3,20 @@ import pytest
 from index import Index
 
 
+def test_unique_entry():
+    idx = Index()
+    idx.add("COLON", ":")
+    assert idx["COLON"] == {":"}
+
+
+def test_three_occurrences():
+    sample = [("7", "DIGIT"), ("8", "DIGIT"), ("9", "DIGIT")]
+    idx = Index()
+    for char, word in sample:
+        idx.add(word, char)
+    assert idx["DIGIT"] == {"7", "8", "9"}
+
+
 @pytest.fixture
 def sample_index():
     sample = [
@@ -23,18 +37,8 @@ def sample_index():
     return idx
 
 
-def test_unique_entry():
-    idx = Index()
-    idx.add("COLON", ":")
-    assert idx["COLON"] == {":"}
-
-
-def test_three_occurrences():
-    sample = [("7", "DIGIT"), ("8", "DIGIT"), ("9", "DIGIT")]
-    idx = Index()
-    for char, word in sample:
-        idx.add(word, char)
-    assert idx["DIGIT"] == {"7", "8", "9"}
+def test_two_word_query(sample_index):
+    assert sample_index.get("SIGN", "LESS") == {"<"}
 
 
 @pytest.mark.parametrize(
