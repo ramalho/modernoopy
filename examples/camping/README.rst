@@ -21,12 +21,12 @@ The ``report`` method lists who should receive or pay, and the
 respective amounts.
 
     >>> b.report()
-       Total: $100.00; per person: $25.00
+      Total: $100.00; per person: $ 25.00
     ----------------------------------------
-           Ann paid $10.00, owes $15.00
-           Bob paid $50.00, gets $25.00
-       Charlie paid $ 0.00, owes $25.00
-        Debbie paid $40.00, gets $15.00
+           Ann paid $ 10.00, owes $ 15.00
+           Bob paid $ 50.00, gets $ 25.00
+       Charlie paid $  0.00, owes $ 25.00
+        Debbie paid $ 40.00, gets $ 15.00
 
 Running tests
 -------------

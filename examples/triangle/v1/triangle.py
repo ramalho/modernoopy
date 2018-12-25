@@ -6,7 +6,7 @@ Simple class to represent a right-angled triangle.
     3.0
     >>> t.hypot()
     5.0
-    >>> t.display()
+    >>> t.describe()
     Right triangle with sides 5.0, 4.0, and 3.0.
     >>> t  # doctest:+ELLIPSIS
     <triangle.RightTriangle object at 0x...>
@@ -25,7 +25,7 @@ class RightTriangle:
     def hypot(self):
         return math.hypot(self.a, self.b)
 
-    def display(self):
+    def describe(self):
         sides = [self.a, self.b, self.hypot()]
         sides.sort(reverse=True)
         msg = "Right triangle with sides {}, {}, and {}."

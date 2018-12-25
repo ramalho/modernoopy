@@ -21,11 +21,11 @@ class Budget:
     def report(self):
         """report displays names and amounts due or owed"""
         average = self.total() / len(self._contributions)
-        msg = f"Total: ${self.total():5.2f}; per person: ${average:5.2f}"
+        msg = f"Total: ${self.total():6.2f}; per person: ${average:6.2f}"
         print(msg.center(40).rstrip())
         print("-"* 40)
         for name in self.people():
             paid = self._contributions[name] 
             op = "gets" if paid >= average else "owes"
             diff = abs(paid - average)
-            print(f"{name:>10} paid ${paid:5.2f}, {op} ${diff:5.2f}")
+            print(f"{name:>10} paid ${paid:6.2f}, {op} ${diff:6.2f}")

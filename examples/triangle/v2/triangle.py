@@ -6,6 +6,8 @@ Simple class to represent a right-angled triangle.
     3.0
     >>> t.hypot()
     5.0
+    >>> t.area()
+    6.0
     >>> t
     RightTriangle(3.0, 4.0)
     >>> str(t)
@@ -26,6 +28,9 @@ class RightTriangle:
 
     def hypot(self):
         return math.hypot(self.a, self.b)
+
+    def area(self):
+        return (self.a * self.b) / 2
 
     def __str__(self):
         sides = [self.a, self.b, self.hypot()]
