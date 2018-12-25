@@ -4,21 +4,21 @@ income, and balance.
 
 Create ``FinancialHistory`` with $ 100.
 
-    >>> h = FinancialHistory(100)
+    >>> h = FinancialHistory('100')
     >>> h
     <FinancialHistory(100.00): 0 transactions>
 
 Spend some money::
 
-    >>> h.spend(39.95, 'meal')
+    >>> h.spend('39.95', 'meal')
     >>> h
     <FinancialHistory(60.05): 1 transaction>
-    >>> h.balance()
-    Decimal('60.0500000')
+    >>> h.balance
+    Decimal('60.05')
 
 Decimals can be formatted like floats::
 
-    >>> print(f'${h.balance():0.2f}')
+    >>> print(f'${h.balance:0.2f}')
     $60.05
 
 Get more money::
@@ -46,24 +46,38 @@ Check amount spent on travel (zero):
     >>> h.spent_for('travel')
     Decimal('0')
 
+Statement:
+
+    >>> for line in h.statement():  # doctest: +NORMALIZE_WHITESPACE
+    ...   print(line)
+    # initial balance    +100.00
+    meal                  -39.95
+    Molly's game        +1000.01
+    found on street       +10.01
+    meal                  -55.35
+    meal                  -26.65
+    concert              -300.00
+    # current balance    +688.07
+
+
 """
 
 import collections
 import decimal
 from decimal import Decimal
 
-Transaction = collections.namedtuple("Transaction", "amount party")
+Transaction = collections.namedtuple("Transaction", "amount description")
 
 decimal.setcontext(decimal.BasicContext)
 
 
 class FinancialHistory:
     def __init__(self, amount=0):
-        self._balance = Decimal(amount)
+        self._initial_balance = Decimal(amount)
         self._history = []
 
     def __repr__(self):
-        bal = self._balance
+        bal = self.balance
         len_hist = len(self._history)
         plural = "s" if len_hist != 1 else ""
         return f"<FinancialHistory({bal:0.2f}): {len_hist} transaction{plural}>"
@@ -71,16 +85,27 @@ class FinancialHistory:
     def receive(self, amount, source):
         amount = Decimal(amount)
         self._history.append(Transaction(amount, source))
-        self._balance += amount
 
     def spend(self, amount, reason):
-        amount = Decimal(amount)
+        amount = -Decimal(amount)
         self._history.append(Transaction(amount, reason))
-        self._balance -= amount
 
+    @property
     def balance(self):
-        return self._balance
+        return self._initial_balance + sum(t.amount for t in self._history)
 
     def spent_for(self, reason):
-        select = (t.amount for t in self._history if t.party == reason)
-        return sum(select, Decimal(0))
+        select = (t.amount for t in self._history if t.description == reason)
+        return -sum(select, Decimal(0))
+
+    def statement(self):
+        line_fmt = '{reason:12}\t{value:+12.2f}'
+        balance = self._initial_balance
+        msg = '# initial balance'
+        yield line_fmt.format(reason=msg, value=balance)
+        for t in self._history:
+            yield line_fmt.format(reason=t.description,
+                                  value=t.amount)
+            balance += t.amount
+        msg = '# current balance'
+        yield line_fmt.format(reason=msg, value=balance)
