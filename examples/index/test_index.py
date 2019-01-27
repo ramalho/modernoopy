@@ -68,19 +68,6 @@ def test_get_single_arg(sample_index, key, expected):
 
 
 @pytest.mark.parametrize(
-    "key, expected",
-    [
-        ("DIGIT", {"7", "8", "9"}),
-        ("NINE", {"9"}),
-        ("SIGN", {"<", "=", ">"}),
-        ("no-such-key", set()),
-    ],
-)
-def test_get_single_arg(sample_index, key, expected):
-    assert sample_index.get(key) == expected
-
-
-@pytest.mark.parametrize(
     "keys, expected",
     [
         (["DIGIT", "SEVEN"], {"7"}),
