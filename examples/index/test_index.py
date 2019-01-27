@@ -38,7 +38,7 @@ def sample_index():
 
 
 def test_two_word_query(sample_index):
-    assert sample_index.get("SIGN", "LESS") == {"<"}
+    assert sample_index.find("SIGN", "LESS") == {"<"}
 
 
 @pytest.mark.parametrize(
@@ -64,7 +64,7 @@ def test_several_entries(sample_index, key, expected):
     ],
 )
 def test_get_single_arg(sample_index, key, expected):
-    assert sample_index.get(key) == expected
+    assert sample_index.find(key) == expected
 
 
 @pytest.mark.parametrize(
@@ -77,7 +77,7 @@ def test_get_single_arg(sample_index, key, expected):
     ],
 )
 def test_get_single_arg(sample_index, key, expected):
-    assert sample_index.get(key) == expected
+    assert sample_index.find(key) == expected
 
 
 @pytest.mark.parametrize(
@@ -91,4 +91,10 @@ def test_get_single_arg(sample_index, key, expected):
     ],
 )
 def test_get_multiple_args(sample_index, keys, expected):
-    assert sample_index.get(*keys) == expected
+    assert sample_index.find(*keys) == expected
+
+
+def test_do_not_update_index(sample_index):
+    assert len(sample_index.find('DIGIT')) == 3
+    assert len(sample_index.find('DIGIT', 'SEVEN')) == 1
+    assert len(sample_index.find('DIGIT')) == 3

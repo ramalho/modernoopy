@@ -13,9 +13,9 @@ class Index:
     def __getitem__(self, key):
         return self._map[key]
 
-    def get(self, key, *more_keys):
-        """Get the intersection of result sets for each key."""
-        result_set = self[key]
+    def find(self, key, *more_keys):
+        """Return the intersection of result sets for each key."""
+        result_set = set(self[key])
         for key in more_keys:
             result_set &= self[key]
         return result_set
