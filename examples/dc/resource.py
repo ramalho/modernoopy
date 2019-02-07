@@ -1,7 +1,7 @@
 """
 Media resource description class with subset of the Dubin Core fields.
 
-Representation format:
+Default field values:
 
     >>> r = Resource()
     >>> r
@@ -14,6 +14,24 @@ Representation format:
         description = '',
         language = '',
         subjects = [],
+    )
+
+A complete resource record:
+
+    >>> description = 'A hands-on guide to idiomatic Python code.'
+    >>> book = Resource('9781491946008', 'Fluent Python', 
+    ...   ['Luciano Ramalho'], '2015-08-20', 'book', description,
+    ...   'EN', ['computer programming', 'Python'])
+    >>> book
+    Resource(
+        identifier = '9781491946008',
+        title = 'Fluent Python',
+        creators = ['Luciano Ramalho'],
+        date = '2015-08-20',
+        type = 'book',
+        description = 'A hands-on guide to idiomatic Python code.',
+        language = 'EN',
+        subjects = ['computer programming', 'Python'],
     )
 
 """
