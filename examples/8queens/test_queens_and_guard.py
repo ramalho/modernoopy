@@ -24,6 +24,7 @@ def test_aligned(source, target, expected):
     ([(1, 1), (1, 2), (2, 3)], False),
     ([(1, 1), (2, 3), (3, 2)], False),
     ([(1, 1), (2, 3), (3, 5)], True),
+    ([(1, 1), (2, 4), (3, 2)], True),
 ])
 def test_all_safe(positions, expected):
     assert expected == all_safe(positions)
