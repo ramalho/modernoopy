@@ -1,6 +1,8 @@
-# Object-oriented solution to the 8 Queens puzzle ported from Object Pascal
+# Object-oriented solution to the 8 Queens puzzle ported from Smalltalk
 # example in chapter 6 of "An Introduction to Object-Oriented Programming"
 # (3rd ed.) by Timothy Budd
+
+from random import shuffle
 
 
 def aligned(source: tuple, target: tuple) -> bool:
@@ -16,56 +18,57 @@ def aligned(source: tuple, target: tuple) -> bool:
     return False
 
 
-def all_safe(positions: list) -> bool:
-    """True if none of the positions are aligned."""
-    for i in range(len(positions) - 1):
-        for j in range(i + 1, len(positions)):
-            if aligned(positions[i], positions[j]):
-                return False
-    return True
-
-
 class Queen:
 
     def __init__(self, size, column, neighbor):
         self.size = size
         self.column = column
         self.neighbor = neighbor
-        self.row = 1
+        self.row_sequence = list(range(1, size+1))
+        shuffle(self.row_sequence)
+        self.rows = self.row_sequence[:]
+        self.row = self.rows.pop()
 
     def can_attack(self, test_row, test_column) -> bool:
         """True if self or any neighbor can attack."""
         if aligned((self.row, self.column), (test_row, test_column)):
             return True
         # test neighbors
-        if self.neighbor:
-            return self.neighbor.can_attack(test_row, test_column)
-        return False
+        return self.neighbor.can_attack(test_row, test_column)
 
     def advance(self) -> bool:
-        if self.row < self.size:  # try next row
-            self.row += 1
+        if self.rows:  # try next row
+            self.row = self.rows.pop()
             return self.find_solution()
-        if self.neighbor:
-            if not self.neighbor.advance():
-                return False
-            else:
-                self.row = 1
-                return self.find_solution()
-        return False
+        # cannot go further, move neighbor
+        if not self.neighbor.advance():
+            return False
+        # restart
+        self.rows = self.row_sequence[:]
+        self.row = self.rows.pop()
+        return self.find_solution()
 
-    def find_solution(self):
-        if self.neighbor:
-            while self.neighbor.can_attack(self.row, self.column):
-                if not self.advance():
-                    return False
+    def find_solution(self) -> bool:
+        while self.neighbor.can_attack(self.row, self.column):
+            if not self.advance():
+                return False
         return True
 
-    def locate(self):
-        if not self.neighbor:
-            return [(self.row, self.column)]
-        else:
-            return self.neighbor.locate() + [(self.row, self.column)]
+    def locate(self) -> list:
+        return self.neighbor.locate() + [(self.row, self.column)]
+
+
+class Guard:
+    """A sentinel object."""
+
+    def advance(self) -> bool:
+        return False
+
+    def can_attack(self, row, column) -> bool:
+        return False
+
+    def locate(self) -> list:
+        return []
 
 
 def draw_row(size, row, column):
@@ -85,14 +88,14 @@ class NoSolution(BaseException):
 
 
 def solve(size):
-    neighbor = None
+    figure = Guard()
     for i in range(1, size+1):
-        neighbor = Queen(size, i, neighbor)
-        found = neighbor.find_solution()
+        figure = Queen(size, i, figure)
+        found = figure.find_solution()
         if not found:
             raise NoSolution()
 
-    return neighbor.locate()
+    return figure.locate()
 
 
 def main(size):

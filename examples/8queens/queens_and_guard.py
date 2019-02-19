@@ -16,14 +16,6 @@ def aligned(source: tuple, target: tuple) -> bool:
     return False
 
 
-def all_safe(positions: list) -> bool:
-    """True if none of the positions are aligned."""
-    for i in range(len(positions) - 1):
-        for j in range(i + 1, len(positions)):
-            if aligned(positions[i], positions[j]):
-                return False
-    return True
-
 class Queen:
 
     def __init__(self, size, column, neighbor):
@@ -43,7 +35,6 @@ class Queen:
         if self.row < self.size:  # try next row
             self.row += 1
             return self.find_solution()
-        
         # cannot go further, move neighbor
         if not self.neighbor.advance():
             return False
@@ -118,4 +109,3 @@ if __name__ == '__main__':
     else:
         size = 8
     main(size)
- 
