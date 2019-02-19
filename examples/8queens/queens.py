@@ -10,35 +10,35 @@ class Queen:
         self.neighbor = neighbor
         self.row = 1
 
-    def safe(self, row, column):
-        """True if self and neighbor cannot be attacked from row, column"""
+    def can_attack(self, row, column) -> bool:
+        """True if self or neighbor(s) can attack row, column"""
         if row == self.row:
-            return False
+            return True
         # test diagonals
-        row_delta = abs(row - self.row)
-        column_delta = abs(column - self.column)
-        if row_delta == column_delta:
-            return False
+        delta = column - self.column
+        if (self.row + delta == row) or (self.row - delta == row):
+            return True
         # test neighbors
-        return self.neighbor.safe(row, column)
+        return self.neighbor.can_attack(row, column)
 
-    def advance(self):
-        if self.row < 8:  # try next row
+    def advance(self) -> bool:
+        if self.row < N:  # try next row
             self.row += 1
             return self.find_solution()
-        else:  # cannot go further, move neighbor
-            if not self.neighbor.advance():
-                return False
+        
+        # cannot go further, move neighbor
+        if not self.neighbor.advance():
+            return False
         self.row = 1
-        self.find_solution()
+        return self.find_solution()
 
-    def find_solution(self):
-        while not self.neighbor.safe(self.row, self.column):
+    def find_solution(self) -> bool:
+        while self.neighbor.can_attack(self.row, self.column):
             if not self.advance():
                 return False
         return True
 
-    def result(self):
+    def result(self) -> list:
         return self.neighbor.result() + [(self.row, self.column)]
 
 
@@ -46,8 +46,8 @@ class Sentinel:
     def advance(self):
         return False
 
-    def safe(self, row, column):
-        return True
+    def can_attack(self, row, column):
+        return False
 
     def result(self):
         return []
@@ -57,17 +57,17 @@ def draw_row(row, column):
     queen = '│ \N{black chess queen} '
     square = '│   '
     if row == 1:
-        print('┌───┬───┬───┬───┬───┬───┬───┬───┐')
+        print('┌───' + '┬───' * (N-1) + '┐')
     else:
-        print('├───┼───┼───┼───┼───┼───┼───┼───┤')
-    print(square * (column-1), queen, square * (8-column), '│', sep='')
-    if row == 8:
-        print('└───┴───┴───┴───┴───┴───┴───┴───┘')
+        print('├───' + '┼───' * (N-1) + '┤')
+    print(square * (column-1), queen, square * (N-column), '│', sep='')
+    if row == N:
+        print('└───' + '┴───' * (N-1) + '┘')
 
 
 def main():
     last_queen = Sentinel()
-    for i in range(1, 9):
+    for i in range(1, N+1):
         last_queen = Queen(i, last_queen)
         last_queen.find_solution()
 
@@ -78,4 +78,10 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    if len(sys.argv) == 2:
+        N = int(sys.argv[1])
+    else:
+        N = 8
     main()
+ 
