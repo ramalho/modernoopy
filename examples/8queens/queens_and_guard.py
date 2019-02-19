@@ -39,7 +39,6 @@ class Queen:
         # test neighbors
         return self.neighbor.can_attack(test_row, test_column)
 
-
     def advance(self) -> bool:
         if self.row < self.size:  # try next row
             self.row += 1
@@ -57,8 +56,8 @@ class Queen:
                 return False
         return True
 
-    def result(self) -> list:
-        return self.neighbor.result() + [(self.row, self.column)]
+    def locate(self) -> list:
+        return self.neighbor.locate() + [(self.row, self.column)]
 
 
 class Guard:
@@ -70,7 +69,7 @@ class Guard:
     def can_attack(self, row, column) -> bool:
         return False
 
-    def result(self) -> list:
+    def locate(self) -> list:
         return []
 
 
@@ -98,7 +97,7 @@ def solve(size):
         if not found:
             raise NoSolution()
 
-    return figure.result()
+    return figure.locate()
 
 
 def main(size):

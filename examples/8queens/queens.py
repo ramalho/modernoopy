@@ -3,34 +3,46 @@
 # (3rd ed.) by Timothy Budd
 
 
+def aligned(source: tuple, target: tuple) -> bool:
+    """True if positions are aligned orthogonally or diagonally."""
+    row, col = source
+    target_row, target_col = target
+    if row == target_row or col == target_col:
+        return True
+    # test diagonals
+    delta = row - target_row
+    if (col + delta == target_col) or (col - delta == target_col):
+        return True
+    return False
+
+
+def all_safe(positions: list) -> bool:
+    """True if none of the positions are aligned."""
+    for i in range(len(positions) - 1):
+        for j in range(i + 1, len(positions)):
+            if aligned(positions[i], positions[j]):
+                return False
+    return True
+
 class Queen:
 
-    def __init__(self, column, neighbor):
+    def __init__(self, size, column, neighbor):
+        self.size = size
         self.column = column
         self.neighbor = neighbor
         self.row = 1
 
-    def can_attack(self, test_row, test_col):
-        if self.row == test_row:
+    def can_attack(self, test_row, test_column) -> bool:
+        """True if self or any neighbor can attack."""
+        if aligned((self.row, self.column), (test_row, test_column)):
             return True
-
-        delta = test_col - self.column
-        if ((self.row + delta == test_row) or
-            (self.row - delta == test_row)):
-            return True
-
+        # test neighbors
         if self.neighbor:
-            return self.neighbor.can_attack(test_row, test_col)
+            return self.neighbor.can_attack(test_row, test_column)
+        return False
 
-    def find_solution(self):
-        if self.neighbor:
-            while self.neighbor.can_attack(self.row, self.column):
-                if not self.advance():
-                    return False
-        return True
-
-    def advance(self):
-        if self.row < N:
+    def advance(self) -> bool:
+        if self.row < self.size:  # try next row
             self.row += 1
             return self.find_solution()
         if self.neighbor:
@@ -41,6 +53,13 @@ class Queen:
                 return self.find_solution()
         return False
 
+    def find_solution(self):
+        if self.neighbor:
+            while self.neighbor.can_attack(self.row, self.column):
+                if not self.advance():
+                    return False
+        return True
+
     def locate(self):
         if not self.neighbor:
             return [(self.row, self.column)]
@@ -48,36 +67,49 @@ class Queen:
             return self.neighbor.locate() + [(self.row, self.column)]
 
 
-def draw_row(row, column):
+def draw_row(size, row, column):
     queen = '│ \N{black chess queen} '
     square = '│   '
     if row == 1:
-        print('┌───' + '┬───' * (N-1) + '┐')
+        print('┌───' + '┬───' * (size-1) + '┐')
     else:
-        print('├───' + '┼───' * (N-1) + '┤')
-    print(square * (column-1), queen, square * (N-column), '│', sep='')
-    if row == N:
-        print('└───' + '┴───' * (N-1) + '┘')
+        print('├───' + '┼───' * (size-1) + '┤')
+    print(square * (column-1), queen, square * (size-column), '│', sep='')
+    if row == size:
+        print('└───' + '┴───' * (size-1) + '┘')
 
 
-def main():
+class NoSolution(BaseException):
+    """No solution found."""
+
+
+def solve(size):
     neighbor = None
-    for i in range(1, N+1):
-        last_queen = Queen(i, neighbor)
-        if not last_queen.find_solution():
-            print('no solution')
-        neighbor = last_queen
+    for i in range(1, size+1):
+        neighbor = Queen(size, i, neighbor)
+        found = neighbor.find_solution()
+        if not found:
+            raise NoSolution()
 
-    places = sorted(last_queen.locate())
-    print(places)
-    for cell in places:
-        draw_row(*cell)
+    return neighbor.locate()
+
+
+def main(size):
+    try:
+        result = sorted(solve(size))
+    except NoSolution as exc:
+        print(exc.__doc__)
+    else:
+        print(result)
+        for cell in result:
+            draw_row(size, *cell)
 
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv) == 2:
-        N = int(sys.argv[1])
+        size = int(sys.argv[1])
     else:
-        N = 8
-    main()
+        size = 8
+    main(size)
+ 
