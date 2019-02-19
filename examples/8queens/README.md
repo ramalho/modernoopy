@@ -4,6 +4,8 @@ This directory contains Object-Oriented solutions to the 8 Queens Problem, porte
 
 The key characteristic of these examples is that there is no central control: each Queen moves in its column searching for a row where it cannot be attacked by any other Queen. When it cannot find a safe row, it asks its neighboring Queen to move and starts over. This produces the backtracking behavior that makes the 8 Queens problem famous in computing.
 
+Here are notes about each of the programs in this directory.
+
 ## `queens.py`
 
 This is probably the easiest implementation to understand. If executed without arguments, it computes and displays a solution with 8 Queens:
@@ -60,7 +62,7 @@ $ python3 queens.py 10
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
 
-Interestingly, N=14 raises `RecursionError` (using the default recursion limit of 1000), but N=15 does not. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for safe a place in their rows.
+Interestingly, N=14 raises `RecursionError` (using Python's default recursion limit of 1000), but N=15 does not. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for safe a place in their rows.
 
 ## `queens_and_guard.py`
 
@@ -68,13 +70,13 @@ The `queens_and_guard.py` version uses a `Guard` instance as a sentinel: it is t
 
 ## `random_queens_and_guard.py`
 
-This implementation moves each `Queen` through a random but fixed sequence or rows, so each run can produce a different solution to the problem.
+I this implementation, each `Queen` moves back and forth through a random but fixed sequence of rows, so each run can produce a different solution to the problem. For example, it is known that for 8 Queens there are 92 solutions, but with 4 Queens there are only 4.
 
-Because of the backtracking nature of the algorithm, different movement sequences can produce more or less recursive calls. Starting with 10 Queens, some runs do not conclude because Python raises a `RecursionError` (using the default recursion limit of 1000). 
+Because of the backtracking nature of the algorithm, different sequences of moves can produce more or less recursive calls. Starting with 10 Queens, some runs do not conclude because Python raises a `RecursionError` (using the default recursion limit of 1000). 
 
 ## `drive_random_queens.py`
 
-This script calls the `solve` function of the `random_queens_and_guard.py` module 500 times for each value of N Queens from 8 to 20. Each call either produces a solution or raises `RecursionError`. The succesful calls are counted and displayed as a percentage. This is a sample run, which took about 95s on a Core i7 machine:
+This script calls the `solve` function of the `random_queens_and_guard.py` module 500 times for each value of N Queens from 8 to 20. Each call either produces a solution or raises `RecursionError`. The succesful calls are counted and displayed as a percentage. This is a sample run, which took about 95 seconds on a Core i7 machine:
 
 ```bash
 $ time python3 drive_random_queens.py 
@@ -97,7 +99,7 @@ user	1m34.735s
 sys	0m0.040s
 ```
 
-In the example above, 100% of the attempts with 10 Queens were succesful, but for 20 Queens the success rate was 74.8% — meaning that 25.2% hit Python's recursion limit before completing.
+In the example above, 100% of the attempts with 10 Queens were succesful, but for 20 Queens the success rate was 74.8% — meaning that 25.2% of the calls hit Python's recursion limit before completing.
 
 The table below shows results for 5 runs of `drive_random_queens.py`, demonstrating that most of the time `random_queens_and_guard.py` can solve for 10 Queens, but sometimes it fails.
 
