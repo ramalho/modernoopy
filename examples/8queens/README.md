@@ -8,7 +8,7 @@ Here are notes about each of the programs in this directory.
 
 ## `queens.py`
 
-This is probably the easiest implementation to understand. If executed without arguments, it computes and displays a solution with 8 Queens:
+This is the implementation to study first. If executed without arguments, it computes and displays a solution with 8 Queens:
 
 ```bash
 $ python3 queens.py 
@@ -62,7 +62,9 @@ $ python3 queens.py 10
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
 
-Interestingly, 14 Queens raises `RecursionError` (using Python's default recursion limit of 1000), but 15 Queens is OK. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for a safe a square in their rows.
+Because all queens start in row 1, and all move in the same way, the solution presented for each number of queens is always the same.
+
+Interestingly, running `queens.py` with 14 Queens raises `RecursionError` (using Python's default recursion limit of 1000), but with 15 Queens there's no problem. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for a safe a square in their rows.
 
 ## `queens_and_guard.py`
 
