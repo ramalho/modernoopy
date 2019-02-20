@@ -2,7 +2,7 @@
 
 This directory contains Object-Oriented solutions to the 8 Queens Problem, ported from examples in chapter 6 of Tim Budd's *Introduction to Object-Oriented Programming, 3e* (Addison-Wesley, 2002).
 
-The key characteristic of these examples is that there is no central control: each Queen moves in its column searching for a row where it cannot be attacked by any other Queen. When it cannot find a safe row, it asks its neighboring Queen to move and starts over. This produces the backtracking behavior that makes the 8 Queens problem famous in computing.
+The key characteristic of these examples is that there is no central control. Each queen is assigned to a column, and moves in its column searching for a row where it cannot be attacked by any other queen. When it cannot find a safe row, it asks its neighboring queen to move and starts over. This produces the backtracking behavior that makes the 8 Queens problem famous in computing.
 
 Here are notes about each of the programs in this directory.
 
@@ -64,7 +64,7 @@ $ python3 queens.py 10
 
 Because all queens start in row 1, and all move in the same way, the solution presented for each number of queens is always the same.
 
-Interestingly, running `queens.py` with 14 Queens raises `RecursionError` (using Python's default recursion limit of 1000), but with 15 Queens there's no problem. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for a safe a square in their rows.
+Interestingly, running `queens.py` with 14 queens raises `RecursionError` (using Python's default recursion limit of 1000), but with 15 queens there's no problem. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for a safe a square in their columns.
 
 ## `queens_and_guard.py`
 
@@ -72,9 +72,9 @@ The `queens_and_guard.py` version uses a `Guard` instance as a sentinel: it is t
 
 ## `random_queens_and_guard.py`
 
-In this implementation, each `Queen` moves back and forth through a random but fixed sequence of rows, so each run can produce a different solution. For example, it is known that for 8 Queens there are 92 solutions, but with 4 Queens there are only 2.
+In this implementation, each `Queen` moves back and forth through a random but fixed sequence of rows, so each run can produce a different solution. For example, it is known that for 8 queens there are 92 solutions, but with 4 queens there are only 2.
 
-Because of the backtracking nature of the algorithm, different sequences of moves can produce more or less recursive calls. Starting with 10 Queens, some runs do not conclude because Python raises a `RecursionError` (using the default recursion limit of 1000). 
+Because of the backtracking nature of the algorithm, different sequences of moves can produce more or less recursive calls. Starting with 10 queens, some runs do not conclude because Python raises a `RecursionError` (using the default recursion limit of 1000). 
 
 ## `drive_random_queens.py`
 
@@ -101,9 +101,9 @@ user	1m34.735s
 sys	0m0.040s
 ```
 
-In the example above, 100% of the attempts with 10 Queens were succesful, but for 20 Queens the success rate was 74.8% — meaning that 25.2% of the calls hit Python's recursion limit and did not complete.
+In the example above, 100% of the attempts with 10 queens were successful, but for 20 queens the success rate was 74.8% — meaning that 25.2% of the calls hit Python's recursion limit and did not complete.
 
-The table below shows results for 5 runs of `drive_random_queens.py`, demonstrating that most of the time `random_queens_and_guard.py` can solve for 10 Queens, but sometimes it fails.
+The table below shows results for 5 runs of `drive_random_queens.py`, demonstrating that most of the time `random_queens_and_guard.py` can solve for 10 queens, but sometimes it fails.
 
 
 |   N   | run 1 | run 2 | run 3 | run 4 | run 5 |
