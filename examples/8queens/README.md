@@ -62,15 +62,15 @@ $ python3 queens.py 10
 └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
 ```
 
-Interestingly, N=14 raises `RecursionError` (using Python's default recursion limit of 1000), but N=15 does not. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for safe a place in their rows.
+Interestingly, 14 Queens raises `RecursionError` (using Python's default recursion limit of 1000), but 15 Queens is OK. This is due to the backtracking behavior of the queens, which is sensitive to the order in which they search for a safe a square in their rows.
 
 ## `queens_and_guard.py`
 
-The `queens_and_guard.py` version uses a `Guard` instance as a sentinel: it is the neighbor of the first `Queen`, and it has fixed responses for three of the methods. This avoids several special checks that are needed in `queens.py` to handle the first `Queen` that has no neighboor.
+The `queens_and_guard.py` version uses a `Guard` instance as a sentinel: it is the neighbor of the first `Queen`. The `Guard` class implements three methods with simple hard-coded responses. This leverages polymorphism to avoid several checks that `queens.py` uses to handle the special case of the first `Queen`, which has no royal neighbor.
 
 ## `random_queens_and_guard.py`
 
-I this implementation, each `Queen` moves back and forth through a random but fixed sequence of rows, so each run can produce a different solution to the problem. For example, it is known that for 8 Queens there are 92 solutions, but with 4 Queens there are only 4.
+In this implementation, each `Queen` moves back and forth through a random but fixed sequence of rows, so each run can produce a different solution. For example, it is known that for 8 Queens there are 92 solutions, but with 4 Queens there are only 2.
 
 Because of the backtracking nature of the algorithm, different sequences of moves can produce more or less recursive calls. Starting with 10 Queens, some runs do not conclude because Python raises a `RecursionError` (using the default recursion limit of 1000). 
 
@@ -99,7 +99,7 @@ user	1m34.735s
 sys	0m0.040s
 ```
 
-In the example above, 100% of the attempts with 10 Queens were succesful, but for 20 Queens the success rate was 74.8% — meaning that 25.2% of the calls hit Python's recursion limit before completing.
+In the example above, 100% of the attempts with 10 Queens were succesful, but for 20 Queens the success rate was 74.8% — meaning that 25.2% of the calls hit Python's recursion limit and did not complete.
 
 The table below shows results for 5 runs of `drive_random_queens.py`, demonstrating that most of the time `random_queens_and_guard.py` can solve for 10 Queens, but sometimes it fails.
 
