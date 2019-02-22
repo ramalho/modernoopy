@@ -43,9 +43,12 @@ class Queen:
         return False
 
     def advance(self) -> bool:
+        print(f'advance Queen #{self.column}: ({self.row}, {self.column})', end='')
         if self.row < self.size:  # try next row
             self.row += 1
+            print(f' → ({self.row}, {self.column})')
             return self.find_solution()
+        print(' ×')
         if self.neighbor:
             if not self.neighbor.advance():
                 return False
