@@ -8,15 +8,25 @@
 cards = []
 
 def setup():
-    size(1024, 576)
-    #global bg
-    #bg = loadImage('course-image-bg.png')
-    img = loadImage('2S.png')    # Load the image into the program
-    cards.append(img)
-    #noLoop()
+    size(1024, 576, P3D)
+    global bg
+    bg = loadImage('course-image-bg.png')
+    ranks = [str(n) for n in range(2, 11)] + list('JQKA')
+    names = [r+s+'.png' for s in 'SDCH' for r in ranks]
+    for name in names:
+        img = loadImage(name)
+        print(img.width)
+        cards.append(img)
+    noLoop()
 
 
 def draw():
-    #background(bg)
-    img = cards[0]
-    image(img, 0, height / 2, img.width / 2, img.height / 2)
+    background(bg)
+    rot_step = PI/2/len(cards)
+    translate(30, 490, 0)
+    rotate(-rot_step * 40)
+    for i, card in enumerate(cards):
+        rotate(rot_step)
+        translate(19, 0, 0)
+        image(card, 0, 0, card.width*.66, card.height*.66)
+    save('course-image.png')
