@@ -28,6 +28,13 @@ respective amounts.
        Charlie paid $  0.00, owes $ 25.00
         Debbie paid $ 40.00, gets $ 15.00
 
+The data used by ``repor`` is computed by the `balances` generator:
+
+    >>> b.balances()  # doctest:+ELLIPSIS
+    <generator object Budget.balances at 0x...>
+    >>> list(b.balances())
+    [('Ann', 10.0, -15.0), ('Bob', 50.0, 25.0), ('Charlie', 0.0, -25.0), ('Debbie', 40.0, 15.0)]
+
 Running tests
 -------------
 

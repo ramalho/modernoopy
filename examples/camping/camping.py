@@ -18,14 +18,22 @@ class Budget:
             raise LookupError("Person not in budget")
         self._contributions[who] += amount
 
+    def individual_share(self):
+        return self.total() / len(self._contributions)
+
+    def balances(self):
+        share = self.individual_share()
+        for name in self.people():
+            paid = self._contributions[name]
+            yield (name, paid, paid - share)
+
     def report(self):
         """report displays names and amounts due or owed"""
-        average = self.total() / len(self._contributions)
-        msg = f"Total: ${self.total():6.2f}; per person: ${average:6.2f}"
-        print(msg.center(40).rstrip())
+        template = "Total: ${:6.2f}; per person: ${:6.2f}"
+        heading = template.format(self.total(), self.individual_share()) 
+        print(heading.center(40).rstrip())
         print("-"* 40)
-        for name in self.people():
-            paid = self._contributions[name] 
-            op = "gets" if paid >= average else "owes"
-            diff = abs(paid - average)
-            print(f"{name:>10} paid ${paid:6.2f}, {op} ${diff:6.2f}")
+        for name, paid, balance in self.balances():
+            op = "gets" if balance >= 0 else "owes"
+            amount = abs(balance)
+            print(f"{name:>10} paid ${paid:6.2f}, {op} ${amount:6.2f}")
