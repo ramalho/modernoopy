@@ -39,7 +39,7 @@ Spend more money::
 Check amount spent on meals::
 
     >>> h.spent_for('meal')
-    Decimal('121.950000')
+    Decimal('121.95')
 
 Check amount spent on travel (zero):
 
@@ -64,30 +64,39 @@ Statement:
 
 import collections
 import decimal
-from decimal import Decimal
 
-Transaction = collections.namedtuple("Transaction", "amount description")
 
 decimal.setcontext(decimal.BasicContext)
 
 
+def clean_decimal(value):
+    """Builds a Decimal using the cleaner float `repr`"""
+    if isinstance(value, float):
+        value = repr(value)
+    return decimal.Decimal(value)
+
+
+Transaction = collections.namedtuple("Transaction", "amount description")
+
+
 class FinancialHistory:
+
     def __init__(self, amount=0):
-        self._initial_balance = Decimal(amount)
+        self._initial_balance = clean_decimal(amount)
         self._history = []
 
     def __repr__(self):
         bal = self.balance
         len_hist = len(self._history)
-        plural = "s" if len_hist != 1 else ""
-        return f"<FinancialHistory({bal:0.2f}): {len_hist} transaction{plural}>"
+        plural = 's' if len_hist != 1 else ''
+        return f'<FinancialHistory({bal:0.2f}): {len_hist} transaction{plural}>'
 
     def receive(self, amount, source):
-        amount = Decimal(amount)
+        amount = clean_decimal(amount)
         self._history.append(Transaction(amount, source))
 
     def spend(self, amount, reason):
-        amount = -Decimal(amount)
+        amount = -clean_decimal(amount)
         self._history.append(Transaction(amount, reason))
 
     @property
@@ -96,7 +105,7 @@ class FinancialHistory:
 
     def spent_for(self, reason):
         select = (t.amount for t in self._history if t.description == reason)
-        return -sum(select, Decimal(0))
+        return -sum(select, clean_decimal(0))
 
     def statement(self):
         line_fmt = '{reason:12}\t{value:+12.2f}'
