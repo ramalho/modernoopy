@@ -4,8 +4,8 @@ Class ``camping.Budget`` represents the budget for a camping trip.
 
 class Budget:
 
-    def __init__(self, names):
-        self._contributions = {name:0.0 for name in names.split()}
+    def __init__(self, *names):
+        self._contributions = {name:0.0 for name in names}
 
     def total(self):
         return sum(self._contributions.values())
@@ -13,27 +13,27 @@ class Budget:
     def people(self):
         return sorted(self._contributions)
 
-    def contribute(self, who, amount):
-        if who not in self._contributions:
+    def contribute(self, name, amount):
+        if name not in self._contributions:
             raise LookupError("Person not in budget")
-        self._contributions[who] += amount
+        self._contributions[name] += amount
 
     def individual_share(self):
         return self.total() / len(self._contributions)
 
     def balances(self):
         share = self.individual_share()
+        result = []
         for name in self.people():
             paid = self._contributions[name]
-            yield (name, paid, paid - share)
+            result.append((paid - share, name, paid))
+        return result
 
     def report(self):
         """report displays names and amounts due or owed"""
         template = "Total: ${:6.2f}; per person: ${:6.2f}"
         heading = template.format(self.total(), self.individual_share()) 
-        print(heading.center(40).rstrip())
-        print("-"* 40)
-        for name, paid, balance in self.balances():
-            op = "gets" if balance >= 0 else "owes"
-            amount = abs(balance)
-            print(f"{name:>10} paid ${paid:6.2f}, {op} ${amount:6.2f}")
+        print(heading.center(42).rstrip())
+        print("-"* 42)
+        for balance, name, paid in sorted(self.balances()):
+            print(f"{name:>10} paid ${paid:6.2f}, balance: $ {balance:6.2f}")
