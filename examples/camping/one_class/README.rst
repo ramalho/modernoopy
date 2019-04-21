@@ -22,12 +22,13 @@ The ``report`` method lists who should receive or pay, and the
 respective amounts.
 
     >>> b.report()
-       Total: $100.00; per person: $ 25.00
+    Total: $ 100.00; individual share: $ 25.00
     ------------------------------------------
-       Charlie paid $  0.00, balance: $ -25.00
-           Ann paid $ 10.00, balance: $ -15.00
-        Debbie paid $ 40.00, balance: $  15.00
-           Bob paid $ 50.00, balance: $  25.00
+    Charlie paid $  0.00, balance: $ -25.00
+        Ann paid $ 10.00, balance: $ -15.00
+     Debbie paid $ 40.00, balance: $  15.00
+        Bob paid $ 50.00, balance: $  25.00
+
 
 The data used by ``report`` is computed by the `balances` method:
 

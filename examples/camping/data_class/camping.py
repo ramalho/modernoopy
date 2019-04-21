@@ -50,7 +50,7 @@ class Budget:
     def report(self):
         """report displays names and amounts due or owed"""
         share = self.individual_share()
-        heading_tpl = 'Total: ${:6.2f}; individual share: ${:6.2f}'
+        heading_tpl = 'Total: $ {:.2f}; individual share: $ {:.2f}'
         print(heading_tpl.format(self.total(), share))
         print("-"* 42)
         sorted_campers = sorted(self._campers.values(), key=operator.attrgetter('paid'))
