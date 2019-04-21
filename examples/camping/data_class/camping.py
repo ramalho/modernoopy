@@ -9,7 +9,7 @@ class Camper:
     paid: float = 0.0
 
     max_name_len: ClassVar[int] = 0
-    template = '{name:>{width}} paid ${paid:7.2f}'
+    template = '{name:>{name_len}} paid ${paid:7.2f}'
 
     def __post_init__(self):
         if len(self.name) > Camper.max_name_len:
@@ -21,7 +21,7 @@ class Camper:
     def display(self):
         return Camper.template.format(
             name = self.name,
-            width = self.max_name_len,
+            name_len = self.max_name_len,
             paid = self.paid,
         )
 

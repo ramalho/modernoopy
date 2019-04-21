@@ -3,6 +3,7 @@ import operator
 class Camper:
 
     max_name_len = 0
+    template = '{name:>{name_len}} paid ${paid:7.2f}'
 
     def __init__(self, name, paid=0.0):
         self.name = name
@@ -14,10 +15,9 @@ class Camper:
         self.paid += amount
 
     def display(self):
-        camper_tpl = '{name:>{width}} paid ${paid:7.2f}'
-        return camper_tpl.format(
+        return Camper.template.format(
             name = self.name,
-            width = self.max_name_len,
+            name_len = self.max_name_len,
             paid = self.paid,
         )
 
