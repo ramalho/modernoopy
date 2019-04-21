@@ -16,7 +16,7 @@ class Camper:
             Camper.max_name_len = len(self.name)
 
     def pay(self, amount):
-        self.paid += amount
+        self.paid += float(amount)
 
     def display(self):
         return Camper.template.format(

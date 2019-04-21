@@ -2,8 +2,29 @@
 Camping Budget Example
 ======================
 
+Class ``camping.Camper`` represents a contributor to the budget of a camping trip.
+
+    >>> from camping import Camper
+    >>> a = Camper('Anna')
+    >>> a.pay(33)
+    >>> a.display()
+    'Anna paid $  33.00'
+
+A camper can be created with an initial balance:
+
+    >>> c = Camper('Charlie', 9)
+
+The ``.display()`` method right-justifies the names taking into account the
+longest name so far, so that multiple calls show aligned columns:
+
+    >>> for camper in [a, c]:
+    ...     print(camper.display())
+       Anna paid $  33.00
+    Charlie paid $   9.00
+
+
 Class ``camping.Budget`` represents the budget for a camping trip
-in which the people who pitched in more than average need to be
+in which campers who pitched in more than average need to be
 reimbursed by the others.
 
     >>> from camping import Budget
