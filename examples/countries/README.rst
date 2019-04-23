@@ -13,7 +13,7 @@ and functions from the ``dataclasses`` standard module::
     population <class 'float'>
     area <class 'float'>
 
-``Country`` inherits a ``__repr__``::
+The ``@dataclass`` decorator generates a ``__repr__`` method::
 
     >>> cn = Country('China', 1_394_897_526, 9_640_821)
     >>> cn
